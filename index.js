@@ -39,9 +39,10 @@ client.on('message', async (channel, tags, message, self) => {
     if (!lookFor.includes(tags.username)) return;
     // pg sanatizes the inputs, so no need to worry about sql injection
     try {
-        const res = await dbClient.query('INSERT INTO messages (timestamp, channel, "user", content, display_name) VALUES ($1, $2, $3, $4, $5)',
+        const res = await dbClient.query('INSERT INTO messages (timestamp, channel, "user", content, display_name) VALUES (TO_TIMESTAMP($1), $2, $3, $4, $5)',
             [tags['tmi-sent-ts'], channel, tags.username, message, tags['display-name']]);
         console.log(`Inserted ${res.rowCount} rows.`);
+        
     }
     catch (err) {
         console.error(err);
