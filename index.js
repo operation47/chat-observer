@@ -1,10 +1,6 @@
 import * as tmi from 'tmi.js';
 import pg from 'pg';
 
-const client = new pg.Client();
-await client.connect();
-console.log('Connected to DB');
-/*
 const isProduction = false;//process.env.NODE_ENV === 'production';
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
@@ -50,4 +46,3 @@ client.on('message', (channel, tags, message, self) => {
     };
     console.log(JSON.stringify(entry));
 });
-*/
