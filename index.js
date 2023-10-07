@@ -1,5 +1,5 @@
 import * as tmi from 'tmi.js';
-import pg from 'pg';
+import fetch from 'node-fetch';
 
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
@@ -21,10 +21,6 @@ else {
     });
 }
 
-const dbClient = new pg.Client();
-await dbClient.connect();
-console.log('Connected to DB');
-
 await client.connect();
 console.log('Connected to Twitch.');
 
@@ -36,21 +32,23 @@ for (const channel of lookIn) {
 client.on('message', async (channel, tags, message, self) => {
     if (self) return;
     if (!lookFor.includes(tags.username)) return;
-    // pg sanatizes the inputs, so no need to worry about sql injection
-    try {
-        const res = await dbClient.query('INSERT INTO messages (timestamp, channel, "user", content, display_name) VALUES (TO_TIMESTAMP($1), $2, $3, $4, $5)',
-            [tags['tmi-sent-ts'], channel, tags.username, message, tags['display-name']]);
-        console.log(`Inserted ${res.rowCount} rows.`);
-        
-    }
-    catch (err) {
-        console.error(err);
-    }
+
+    const row = {
+        unixTimestamp: tags['tmi-sent-ts'],
+        channel: channel,
+        username: tags.username,
+        message: message,
+        displayName: tags['display-name'],
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify(row),
+    };
+
+    fetch('https://api.op47.de/v1/twitch/insertMessage', options);
 });
 
 process.on('exit', () => {
-    console.log('Closing DB connection.');
-    dbClient.end();
     console.log('Disconnecting from Twitch.');
     client.disconnect();
 });
