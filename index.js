@@ -1,7 +1,6 @@
 import * as tmi from 'tmi.js';
 import pg from 'pg';
 
-const isProduction = false;//process.env.NODE_ENV === 'production';
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
 
