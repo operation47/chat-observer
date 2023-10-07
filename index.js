@@ -49,6 +49,8 @@ client.on('message', (channel, tags, message, self) => {
     };
     if (isProduction) { 
         // TODO: insert into db
+        console.log('Inserting into DB');
+        console.log(JSON.stringify(entry));
         return;
     }
     console.log(JSON.stringify(entry));
