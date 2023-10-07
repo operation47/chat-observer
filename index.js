@@ -6,8 +6,8 @@ const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
 
 let client;
-const lookFor = ['stegi', 'di1araas'];
-const lookIn = ['stegi', 'di1araas'];
+const lookFor = ['swox___', 'username2'];
+const lookIn = ['stegi', 'channel2'];
 
 if (!process.env.BOT_NAME || !process.env.BOT_OAUTH) {
     console.error('No bot name or oauth token provided, logging in anonymously.');
