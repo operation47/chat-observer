@@ -44,5 +44,7 @@ client.on('message', (channel, tags, message, self) => {
         content: message,
         displayName: tags['display-name'],
     };
-    console.log(JSON.stringify(entry));
+    // pg sanatizes the inputs, so no need to worry about sql injection
+    dbClient.query('INSERT INTO messages (timestamp, channel, user, content, displayName) VALUES ($1, $2, $3, $4, $5)',
+        [entry.timestamp, entry.channel, entry.user, entry.content, entry.displayName]);
 });
