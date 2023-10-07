@@ -34,10 +34,23 @@ for (const channel of lookIn) {
     client.join(channel);
 }
 
-client.on('message', (channel, tags, message, self) => {
+client.on('message', async (channel, tags, message, self) => {
     if (self) return;
     if (!lookFor.includes(tags.username)) return;
     // pg sanatizes the inputs, so no need to worry about sql injection
-    dbClient.query('INSERT INTO messages (timestamp, channel, user, content, display_name) VALUES ($1, $2, $3, $4, $5)',
-        [tags['tmi-sent-ts'], channel, tags.username, message, tags['display-name']]);
+    try {
+        const res = await dbClient.query('INSERT INTO messages (timestamp, channel, user, content, display_name) VALUES ($1, $2, $3, $4, $5)',
+            [tags['tmi-sent-ts'], channel, tags.username, message, tags['display-name']]);
+        console.log(`Inserted ${res.rowCount} rows.`);
+    }
+    catch (err) {
+        console.error(err);
+    }
+});
+
+process.on('exit', () => {
+    console.log('Closing DB connection.');
+    dbClient.end();
+    console.log('Disconnecting from Twitch.');
+    client.disconnect();
 });
