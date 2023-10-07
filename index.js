@@ -37,14 +37,7 @@ for (const channel of lookIn) {
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
     if (!lookFor.includes(tags.username)) return;
-    const entry = { 
-        timestamp: tags['tmi-sent-ts'],
-        channel: channel,
-        user: tags.username,
-        content: message,
-        displayName: tags['display-name'],
-    };
     // pg sanatizes the inputs, so no need to worry about sql injection
-    dbClient.query('INSERT INTO messages (timestamp, channel, user, content, displayName) VALUES ($1, $2, $3, $4, $5)',
-        [entry.timestamp, entry.channel, entry.user, entry.content, entry.displayName]);
+    dbClient.query('INSERT INTO messages (timestamp, channel, user, content, display_name) VALUES ($1, $2, $3, $4, $5)',
+        [tags['tmi-sent-ts'], channel, tags.username, message, tags['display-name']]);
 });
