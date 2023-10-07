@@ -1,7 +1,10 @@
 import * as tmi from 'tmi.js';
 import pg from 'pg';
 
-
+const client = new pg.Client();
+await client.connect();
+console.log('Connected to DB');
+/*
 const isProduction = false;//process.env.NODE_ENV === 'production';
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
@@ -23,11 +26,8 @@ else {
     });
 }
 
-let dbClient;
-if (isProduction) {
-    dbClient = new pg.Client();
-    await dbClient.connect();
-}
+const dbClient = new pg.Client();
+await dbClient.connect();
 console.log('Connected to DB');
 
 await client.connect();
@@ -48,12 +48,6 @@ client.on('message', (channel, tags, message, self) => {
         content: message,
         displayName: tags['display-name'],
     };
-    if (isProduction) { 
-        // TODO: insert into db
-        console.log('Inserting into DB');
-        console.log(JSON.stringify(entry));
-        return;
-    }
     console.log(JSON.stringify(entry));
 });
-
+*/
