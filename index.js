@@ -46,11 +46,11 @@ client.on('message', async (channel, tags, message, self) => {
     if (!lookFor.includes(tags.username)) return;
 
     const row = {
-        unixTimestamp: tags['tmi-sent-ts'],
+        timestamp: tags['tmi-sent-ts'],
         channel: channel,
         username: tags.username,
         message: message,
-        displayName: tags['display-name'],
+        display_name: tags['display-name'],
     };
     const options = {
         method: 'POST',
