@@ -48,8 +48,8 @@ client.on('message', async (channel, tags, message, self) => {
     const row = {
         timestamp: tags['tmi-sent-ts'],
         channel: channel,
-        username: tags.username,
-        message: message,
+        user: tags.username,
+        content: message,
         display_name: tags['display-name'],
     };
     const options = {
