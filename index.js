@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
+const API_KEY = 'thgp673DPP3hFJHoTMMS!s4hRhgxLtN@';
 
 let client;
 const lookFor = ['stegi', 'di1araas'];
@@ -29,6 +30,17 @@ for (const channel of lookIn) {
     client.join(channel);
 }
 
+async function customFetch(url, options) {
+    if (!options) {
+        options = {};
+    }
+    if (!options['headers']) {
+        options['headers'] = {};
+    }
+    options['headers']['authorization'] = API_KEY
+    return await fetch(url, options)
+}
+
 client.on('message', async (channel, tags, message, self) => {
     if (self) return;
     if (!lookFor.includes(tags.username)) return;
@@ -45,7 +57,7 @@ client.on('message', async (channel, tags, message, self) => {
         body: JSON.stringify(row),
     };
 
-    fetch('https://api.op47.de/v1/twitch/insertMessage', options);
+    customFetch('https://api.op47.de/v1/twitch/insertMessage', options);
 });
 
 process.on('exit', () => {
