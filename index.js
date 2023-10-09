@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 const botName = process.env.BOT_NAME;
 const botOauth = process.env.BOT_OAUTH;
-const API_KEY = 'thgp673DPP3hFJHoTMMS!s4hRhgxLtN@';
+const API_KEY = process.env.API_KEY;
 
 let client;
 const lookFor = ['stegi', 'di1araas'];
